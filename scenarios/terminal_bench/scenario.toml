@@ -1,0 +1,45 @@
+[scenario]
+name = "terminal_bench"
+description = "Terminal-Bench evaluation scenario - code-driven green agent orchestrates tasks"
+version = "1.0.0"
+
+# Agents to be launched
+[[agents]]
+name = "Green Agent"
+card = "agents/green_agent/agent_card.toml"
+launcher_host = "0.0.0.0"
+launcher_port = 9999
+agent_host = "0.0.0.0"
+agent_port = 9998
+model_type = "openai"
+model_name = "gpt-4o-mini"
+tools = ["agents/green_agent/tools.py"]
+mcp_servers = ["http://localhost:9001/sse"]
+is_green = true
+
+[[agents.participant_requirements]]
+role = "red_agent"
+name = "white_agent_under_test"
+required = true
+participant_agent = "White Agent"
+
+# White Agent - Now integrated with AgentBeats using tools.py wrapper
+[[agents]]
+name = "White Agent"
+card = "agents/white_agent/agent_card.toml"
+launcher_host = "0.0.0.0"
+launcher_port = 8010
+agent_host = "0.0.0.0"
+agent_port = 8002
+model_type = "openai"
+model_name = "gpt-4o-mini"
+tools = ["agents/white_agent/tools.py"]
+mcp_servers = []
+
+# Launch configuration
+[launch]
+mode = "separate"  # Options: "tmux", "separate", "current"
+tmux_session_name = "agentbeats-terminal-bench"
+startup_interval = 10  # Increased to give agents time to fully start before registration
+wait_for_services = false
+

@@ -1,0 +1,10 @@
+# Project Dependencies
+a2a-sdk>=0.3.0
+terminal-bench>=0.1.0
+mcp>=1.0.0
+httpx>=0.25.0
+uvicorn>=0.24.0
+starlette>=0.32.0
+pydantic>=2.0.0
+python-dotenv>=1.0.0
+openai>=1.0.0

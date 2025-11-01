@@ -41,9 +41,9 @@ Simply call `start_battle_royale(battle_id, opponent_infos_json)` with:
 - All actions are automatically logged
 - The agent with the highest uptime percentage wins
 '''
-url                 = "http://localhost:8041"
+url                 = "http://localhost:9011"
 host                = "0.0.0.0"
-port                = 8041
+port                = 9011
 version             = "1.0.0"
 defaultInputModes   = ["text"]
 defaultOutputModes  = ["text"]

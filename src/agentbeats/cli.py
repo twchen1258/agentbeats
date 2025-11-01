@@ -574,6 +574,8 @@ def main():
                 parser.error(
                     "--backend is required when --register_agents is used"
                 )
+            print("Waiting 10 seconds for agents to fully start before registration...")
+            time.sleep(10)  # Give agents time to start up
             manager.register_agents_to_backend(backend_url=args.backend)
     
     elif args.cmd == "run_scenario":

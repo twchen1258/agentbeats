@@ -1,0 +1,49 @@
+# Agent Card for Terminal-Bench Green Agent (Evaluator)
+
+name = "TerminalBenchGreenAgent"
+description = """
+This is a green agent (evaluator) that assesses other agents' capabilities on the terminal-bench benchmark.
+
+It receives evaluation requests containing:
+- Dataset configuration (which terminal-bench tasks to run)
+- White agent URL (the agent being evaluated)
+- Evaluation parameters (attempts, concurrency, timeouts)
+
+The green agent then:
+1. Loads the specified terminal-bench tasks
+2. Runs the terminal-bench harness
+3. Communicates with the white agent via A2A protocol
+4. Collects and reports evaluation results
+
+Example request format:
+{
+  "dataset_name": "terminal-bench",
+  "dataset_version": "latest",
+  "task_ids": [1, 2, 3],
+  "white_agent_url": "http://localhost:8001",
+  "n_attempts": 1,
+  "n_concurrent_trials": 1,
+  "timeout_multiplier": 1.0
+}
+"""
+url = "http://localhost:9999/"
+version = "1.0.0"
+
+defaultInputModes = ["text"]
+defaultOutputModes = ["text"]
+
+[capabilities]
+streaming = true
+
+[[skills]]
+id = "evaluation"
+name = "Agent Evaluation"
+description = "Runs terminal-bench benchmark on other agents"
+tags = ["evaluation", "benchmark", "terminal-bench"]
+
+[[skills]]
+id = "reporting"
+name = "Results Reporting"
+description = "Provides detailed evaluation results and metrics"
+tags = ["reporting", "metrics", "results"]
+

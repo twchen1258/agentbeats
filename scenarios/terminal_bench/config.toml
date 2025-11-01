@@ -1,0 +1,171 @@
+# Configuration File
+# Put OPENAI_API_KEY in .env file
+#
+# USAGE CONTEXT:
+# ==============
+# This config.toml is used by BOTH standalone mode (kickoff.py) AND AgentBeats integration:
+#   - Standalone: Used by kickoff.py and green_agent.py when running directly
+#   - AgentBeats: Used by agents/green_agent/tools.py when running via AgentBeats platform
+#   - White agent: Used by white_agent.py when running standalone
+
+[project]
+name = "terminal-bench-green-agent"
+version = "1.0.0"
+
+# Green Agent Settings (Evaluator)
+# USAGE: ✅ Standalone (green_agent.py), ❌ AgentBeats (uses scenario.toml instead)
+[green_agent]
+host = "0.0.0.0"           # Green agent host for standalone mode
+port = 9999                 # Green agent port for standalone mode
+card_path = "src/green_agent/card.toml"
+
+# MCP Server Settings (Task-Scoped Traced Environment)
+# USAGE: ✅ Both modes (A2AAdapter uses this)
+[mcp]
+base_port = 10000           # Base port for task-scoped MCP servers
+
+# White Agent Settings (Agent Under Test)
+# USAGE: ✅ Standalone (white_agent.py), ❌ AgentBeats (uses scenario.toml instead)
+[white_agent]
+host = "0.0.0.0"           # White agent host for standalone mode
+port = 8001                 # White agent port for standalone mode
+model = "gpt-4o-mini"       # LLM model for white agent (standalone)
+max_iterations = 30         # Max tool call iterations for white agent
+
+# Terminal-Bench Evaluation Settings
+# USAGE: ✅ Both modes (loaded by tools.py and kickoff.py)
+[evaluation]
+
+# list all easy tasks for now
+# USAGE: ✅ Both modes - Main setting to control which tasks are evaluated
+task_ids = [
+    "count-dataset-tokens",
+    "create-bucket",
+    "csv-to-parquet",
+    "extract-safely",
+]
+
+
+# USAGE: ✅ Both modes (harness uses these)
+output_path = "./eval_results"    # Where to save evaluation results
+n_attempts = 1                     # Number of attempts per task
+n_concurrent_trials = 1            # Max concurrent tasks
+timeout_multiplier = 1.0           # Timeout multiplier for tasks
+cleanup = true                     # Whether to cleanup Docker containers after tasks
+
+# Dataset Settings
+# USAGE: ✅ Both modes
+[dataset]
+name = "terminal-bench-core"       # Dataset name from terminal-bench
+version = "0.1.1"                  # Dataset version
+
+# Logging Configuration
+# USAGE: ✅ Both modes
+[logging]
+level = "INFO"                     # Log level (DEBUG, INFO, WARNING, ERROR)
+format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+# A2A Protocol Settings
+# USAGE: ✅ Both modes (used by A2A client)
+[a2a]
+message_timeout = 7200.0           # A2A message timeout in seconds (2 hours)
+health_check_timeout = 5.0         # Health check timeout in seconds
+
+# Scoring Configuration
+# USAGE: ✅ Both modes (used for weighted accuracy calculation)
+[scoring]
+# Weights for different difficulty levels
+[scoring.difficulty_weights]
+easy = 1         # Weight for easy tasks in overall score
+medium = 2       # Weight for medium tasks in overall score
+hard = 3         # Weight for hard tasks in overall score
+unknown = 1      # Weight for tasks not in difficulty map
+
+# Task difficulty mapping - YOU SHOULD NOT EDIT THIS SECTION
+# USAGE: ✅ Both modes (used for categorizing tasks and weighted scoring)
+[scoring.task_difficulty_map]
+# Easy tasks
+"count-dataset-tokens" = "easy"
+"create-bucket" = "easy"
+"csv-to-parquet" = "easy"
+"extract-safely" = "easy"
+"fix-permissions" = "easy"
+"git-workflow-hack" = "easy"
+"grid-pattern-transform" = "easy"
+"hello-world" = "easy"
+"modernize-fortran-build" = "easy"
+"processing-pipeline" = "easy"
+"security-vulhub-minio" = "easy"
+"simple-web-scraper" = "easy"
+
+# Medium tasks
+"blind-maze-explorer-algorithm" = "medium"
+"blind-maze-explorer-algorithm.easy" = "medium"
+"blind-maze-explorer-algorithm.hard" = "medium"
+"build-initramfs-qemu" = "medium"
+"build-linux-kernel-qemu" = "medium"
+"build-tcc-qemu" = "medium"
+"chess-best-move" = "medium"
+"conda-env-conflict-resolution" = "medium"
+"crack-7z-hash" = "medium"
+"crack-7z-hash.easy" = "medium"
+"crack-7z-hash.hard" = "medium"
+"cron-broken-network" = "medium"
+"decommissioning-service-with-sensitive-data" = "medium"
+"download-youtube" = "medium"
+"eval-mteb" = "medium"
+"eval-mteb.hard" = "medium"
+"fibonacci-server" = "medium"
+"fix-git" = "medium"
+"fix-pandas-version" = "medium"
+"get-bitcoin-nodes" = "medium"
+"heterogeneous-dates" = "medium"
+"hf-model-inference" = "medium"
+"incompatible-python-fasttext" = "medium"
+"incompatible-python-fasttext.base_with_hint" = "medium"
+"jupyter-notebook-server" = "medium"
+"new-encrypt-command" = "medium"
+"nginx-request-logging" = "medium"
+"openssl-selfsigned-cert" = "medium"
+"polyglot-c-py" = "medium"
+"qemu-alpine-ssh" = "medium"
+"qemu-startup" = "medium"
+"raman-fitting" = "medium"
+"raman-fitting.easy" = "medium"
+"reshard-c4-data" = "medium"
+"sanitize-git-repo" = "medium"
+"sanitize-git-repo.hard" = "medium"
+"simple-sheets-put" = "medium"
+"solana-data" = "medium"
+"sqlite-db-truncate" = "medium"
+"sqlite-with-gcov" = "medium"
+"swe-bench-fsspec" = "medium"
+"swe-bench-langcodes" = "medium"
+"tmux-advanced-workflow" = "medium"
+"vim-terminal-task" = "medium"
+
+# Hard tasks
+"blind-maze-explorer-5x5" = "hard"
+"cartpole-rl-training" = "hard"
+"configure-git-webserver" = "hard"
+"extract-moves-from-video" = "hard"
+"git-multibranch" = "hard"
+"gpt2-codegolf" = "hard"
+"intrusion-detection" = "hard"
+"oom" = "hard"
+"organization-json-generator" = "hard"
+"password-recovery" = "hard"
+"path-tracing" = "hard"
+"path-tracing-reverse" = "hard"
+"play-zork" = "hard"
+"polyglot-rust-c" = "hard"
+"prove-plus-comm" = "hard"
+"pytorch-model-cli" = "hard"
+"pytorch-model-cli.easy" = "hard"
+"pytorch-model-cli.hard" = "hard"
+"run-pdp11-code" = "hard"
+"super-benchmark-upet" = "hard"
+"swe-bench-astropy-1" = "hard"
+"swe-bench-astropy-2" = "hard"
+"train-fasttext" = "hard"
+"write-compressor" = "hard"

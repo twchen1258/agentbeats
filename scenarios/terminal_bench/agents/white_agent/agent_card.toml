@@ -1,0 +1,41 @@
+# Agent Card for Terminal-Bench White Agent (Agent Under Test) - AgentBeats Integration
+
+name = "TerminalBenchWhiteAgent"
+description = """
+This is a white agent (participant) that solves Terminal-Bench tasks.
+
+When you receive a Terminal-Bench evaluation message that contains "MCP Server URL:" in the text,
+you MUST use the solve_terminal_bench_task tool to complete the task. 
+
+The message format will be:
+"You are being evaluated on Terminal-Bench.
+
+TASK: [task description]
+
+MCP Server URL: [url]
+
+ENVIRONMENT: ..."
+
+The solve_terminal_bench_task tool will:
+1. Extract the MCP server URL from the message
+2. Connect to the task-specific MCP server
+3. Execute bash commands via the MCP tools to solve the task
+4. Return the completion status
+
+Simply pass the entire message you receive to the solve_terminal_bench_task tool.
+"""
+url = "http://localhost:8001/"
+version = "1.0.0"
+
+defaultInputModes = ["text"]
+defaultOutputModes = ["text"]
+
+[capabilities]
+streaming = true
+
+[[skills]]
+id = "terminal_task_solving"
+name = "Terminal Task Solving"
+description = "Solves terminal-bench tasks using MCP tools"
+tags = ["terminal", "bash", "problem-solving"]
+
